@@ -1,10 +1,10 @@
 package app;
 
+import Controls.Label;
 import io.github.humbleui.jwm.*;
 import io.github.humbleui.jwm.skija.EventFrameSkija;
 import io.github.humbleui.skija.Canvas;
 import io.github.humbleui.skija.Paint;
-import io.github.humbleui.skija.RRect;
 import io.github.humbleui.skija.Surface;
 import misc.CoordinateSystem2i;
 import misc.Misc;
@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.function.Consumer;
 
 import static app.Colors.APP_BACKGROUND_COLOR;
+import static app.Colors.PANEL_BACKGROUND_COLOR;
 
 public class Application implements Consumer<Event> {
     // окно приложения
@@ -23,10 +24,25 @@ public class Application implements Consumer<Event> {
      */
     public static final int C_RAD_IN_PX = 4;
 
+    /**
+     * отступы панелей
+     */
+    public static final int PANEL_PADDING = 5;
+
+    /**
+     * Первый заголовок
+     */
+    private final Label label;
+
+
     // конструктор приложения
     public Application() {
         // создаём окно
         window = App.makeWindow();
+
+        // создаём первый заголовок
+        label = new Label(window, false, PANEL_BACKGROUND_COLOR, PANEL_PADDING, "Привет, мир!");
+
         // задаём обработчиком событий текущий объект
         window.setEventListener(this);
         // задаём заголовок
@@ -81,14 +97,11 @@ public class Application implements Consumer<Event> {
         canvas.save();
         // очищаем канвас
         canvas.clear(APP_BACKGROUND_COLOR);
-        // создаём кисть
-        Paint paint = new Paint();
-        // задаём цвет рисования
-        paint.setColor(Misc.getColor(100, 255, 255, 255));
-        // рисуем квадрат
-        canvas.drawRRect(windowCS.getRRect(4), paint);
+        // рисуем заголовок в точке [100,100] с шириной и выостой 200
+        label.paint(canvas, new CoordinateSystem2i(100, 100, 200, 200));
         // восстанавливаем состояние канваса
         canvas.restore();
+
     }
 
 
@@ -107,12 +120,7 @@ public class Application implements Consumer<Event> {
             window.close();
         } else if (e instanceof EventFrameSkija ee) {
             Surface s = ee.getSurface();
-            paint(s.getCanvas(), new CoordinateSystem2i(
-                    s.getWidth() / 3, s.getHeight() / 3,
-                    s.getWidth() / 3,  s.getHeight() / 3));
+            paint(s.getCanvas(), new CoordinateSystem2i(s.getWidth(), s.getHeight()));
         }
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package controls;
+package Controls;
 
 import io.github.humbleui.jwm.Event;
 import io.github.humbleui.jwm.Window;
