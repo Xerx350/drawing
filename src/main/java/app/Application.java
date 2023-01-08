@@ -18,6 +18,11 @@ public class Application implements Consumer<Event> {
     // окно приложения
     private final Window window;
 
+    /**
+     * радиус скругления элементов
+     */
+    public static final int C_RAD_IN_PX = 4;
+
     // конструктор приложения
     public Application() {
         // создаём окно
@@ -102,7 +107,9 @@ public class Application implements Consumer<Event> {
             window.close();
         } else if (e instanceof EventFrameSkija ee) {
             Surface s = ee.getSurface();
-            paint(s.getCanvas(), new CoordinateSystem2i(s.getWidth(), s.getHeight()));
+            paint(s.getCanvas(), new CoordinateSystem2i(
+                    s.getWidth() / 3, s.getHeight() / 3,
+                    s.getWidth() / 3,  s.getHeight() / 3));
         }
     }
 
